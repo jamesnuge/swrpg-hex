@@ -1,5 +1,5 @@
 import SVG from 'svgjs';
-import { extendHex, Hex, BaseHex } from 'honeycomb-grid';
+import { extendHex } from 'honeycomb-grid';
 
 export const getSvgHex = (svg: SVG.Doc) => {
     return extendHex({

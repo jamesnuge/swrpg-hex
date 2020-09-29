@@ -16,6 +16,7 @@ svg {
 
 #board {
     border: 2px solid;
+    width: 24em;
     border-color: red;
     height: 100%;
 }
