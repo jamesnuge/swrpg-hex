@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import { Board } from './board/Board';
+import Board from './board/Board';
+import { Provider } from 'react-redux';
+import configureStore from './store';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Board />
-  </React.StrictMode>,
+    <Provider store={configureStore()}>
+        <Board title='The Board'/>
+    </Provider>,
   document.getElementById('root')
 );
 

@@ -3,6 +3,10 @@ import { extendHex } from 'honeycomb-grid';
 
 export const getSvgHex = (svg: SVG.Doc) => {
     return extendHex({
+        textColor: '#69c',
+        isSelected: false,
+        isHighlighted: false,
+        icon: undefined,
         size: 35,
         render() {
             const hexRef: any = this as any;
@@ -10,6 +14,7 @@ export const getSvgHex = (svg: SVG.Doc) => {
             const centerPosition = hexRef.center().add(position)
             svg.polygon(hexRef.corners().map((ref: {x: number, y: number}) => `${ref.x},${ref.y}`))
                 .fill('#1d2025')
+                
                 .stroke(
                     { width: 2, color: '#999' }
                 )
@@ -22,9 +27,9 @@ export const getSvgHex = (svg: SVG.Doc) => {
                 .font({
                     size: fontSize,
                     anchor: 'middle',
-                    leading: 1.4
-                    // color: '#69c'
+                    leading: 1.4,
                 })
+                .stroke(this.isSelected ? 'red': '#61dafb')
                 .translate(centerPosition.x, centerPosition.y - fontSize)
         }
     });
