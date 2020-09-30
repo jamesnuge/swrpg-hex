@@ -15,7 +15,8 @@ svg {
 }
 
 #board {
-    /* border: 2px red solid; */
+    border: 2px red solid;
     width: 24em;
     height: 20em;
+    background: url('../space.gif');
 }

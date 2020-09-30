@@ -8,7 +8,7 @@ import configureStore from './store';
 
 ReactDOM.render(
     <Provider store={configureStore()}>
-        <Board title='The Board'/>
+        <Board/>
     </Provider>,
   document.getElementById('root')
 );
