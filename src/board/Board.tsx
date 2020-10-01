@@ -10,7 +10,6 @@ import './Board.css';
 import { Hex } from 'honeycomb-grid';
 
 export interface BoardProps extends BoardState {
-    selectedHex?: any;
     selectHex: (hex: any) => void;
     initializeBoard: (board: BoardState) => void;
 }
@@ -52,11 +51,7 @@ class Board extends React.Component<BoardProps> {
     private renderSvg() {
         this.svgRef!.clear();
         if (this.grid !== undefined) {
-            this.grid.forEach((hex: any) => {
-                const stateToRender = this.getStateForHex(hex);
-                console.log(stateToRender);
-                hex.render(stateToRender);
-            });
+            this.grid.forEach((hex: any) => hex.render(this.getStateForHex(hex), this.props.center));
         }
     }
 
@@ -71,7 +66,7 @@ class Board extends React.Component<BoardProps> {
                 The Board
                 <div id={this.BOARD_ID} ref={ref => this.initializeSvgRef(ref)}></div>
                 <ClickHandler handler={this.getClickHandler()}/>
-                <pre>{JSON.stringify(this.props, null, 2)}</pre>
+                {/* <pre>{JSON.stringify(this.props, null, 2)}</pre> */}
             </div>
         );
     }
@@ -94,9 +89,7 @@ class Board extends React.Component<BoardProps> {
 
 }
 
-const mapStateToProps = (state: any) => {
-    return state.boardReducer;
-}
+const mapStateToProps = ({boardReducer}: any) => boardReducer
 
 const mapDispatchToProps = (dispatch: Dispatch) => BoardAction(dispatch);
 
