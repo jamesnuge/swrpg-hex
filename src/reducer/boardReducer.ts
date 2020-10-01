@@ -13,40 +13,32 @@ interface BoardAction extends Action<BoardActionType> {
     payload: any;
 }
 
-interface BoardStoreState {
-    board: BoardState;
-    selectedHex?: any;
-}
+type BoardStoreState = BoardState;
 
-const boardState = {
-    board: UNINITIALIZED_STATE
-}
+const boardState = UNINITIALIZED_STATE;
 
 function boardReducer(state: BoardStoreState = boardState, {payload, type}: BoardAction): BoardStoreState {
     switch(type) {
         case HEX_SELECTED:
-            const currentBoardState = state.board;
+            const currentBoardState = state;
             const previousHex = currentBoardState.board.find((hex) => hex.isSelected);
             let board: BoardState;
             if (previousHex) {
                 if (previousHex.id.x !== payload.x || previousHex.id.y !== payload.y) {
-                    board = selectHexInBoard(payload, state.board)                    
+                    board = selectHexInBoard(payload, state)                    
                 } else {
-                    board = deselect(state.board);
+                    board = deselect(state);
                 }
             } else {
-                board = selectHexInBoard(payload, state.board);
+                board = selectHexInBoard(payload, state);
             }
             return {
                 ...state,
-                board
+                ...board
             };
         case INITIALIZE_BOARD:
             return {
-                ...state,
-                board: Object.assign({}, state.board, {
-                    board: payload
-                })
+                ...payload
             };
         default:
             return {...state};

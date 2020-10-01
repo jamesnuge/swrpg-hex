@@ -9,8 +9,7 @@ import BoardAction from '../action/BoardAction';
 import './Board.css';
 import { Hex } from 'honeycomb-grid';
 
-export interface BoardProps {
-    state: BoardState;
+export interface BoardProps extends BoardState {
     selectedHex?: any;
     selectHex: (hex: any) => void;
     initializeBoard: (board: BoardState) => void;
@@ -18,9 +17,7 @@ export interface BoardProps {
 
 class Board extends React.Component<BoardProps> {
 
-    static defaultProps: Partial<BoardProps> = {
-        state: UNINITIALIZED_STATE
-    };
+    static defaultProps: Partial<BoardProps> = UNINITIALIZED_STATE;
 
     private svgRef?: SVG.Doc;
     private grid: any = [];
@@ -55,13 +52,16 @@ class Board extends React.Component<BoardProps> {
     private renderSvg() {
         this.svgRef!.clear();
         if (this.grid !== undefined) {
-            this.grid.forEach((hex: any) => hex.render(this.getStateForHex(hex)));
+            this.grid.forEach((hex: any) => {
+                const stateToRender = this.getStateForHex(hex);
+                console.log(stateToRender);
+                hex.render(stateToRender);
+            });
         }
     }
 
     private getStateForHex(drawnHex: Hex<{}>): HexState | undefined {
-        const maybeState = this.props.state.board.find((hex) => idCheck(hex.id, drawnHex));
-        // console.log(maybeState);
+        const maybeState = this.props.board.find((hex) => idCheck(hex.id, drawnHex));
         return maybeState;
     }
 
@@ -71,6 +71,7 @@ class Board extends React.Component<BoardProps> {
                 The Board
                 <div id={this.BOARD_ID} ref={ref => this.initializeSvgRef(ref)}></div>
                 <ClickHandler handler={this.getClickHandler()}/>
+                <pre>{JSON.stringify(this.props, null, 2)}</pre>
             </div>
         );
     }
@@ -94,9 +95,7 @@ class Board extends React.Component<BoardProps> {
 }
 
 const mapStateToProps = (state: any) => {
-    return {
-        board: state.boardReducer.board
-    };
+    return state.boardReducer;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => BoardAction(dispatch);
