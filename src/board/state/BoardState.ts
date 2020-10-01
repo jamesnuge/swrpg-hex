@@ -12,9 +12,13 @@ export interface HexState {
     icon?: string;
 }
 
-export type BoardState = HexState[];
+export type BoardState = {
+    board: HexState[]
+    radius: number;
+    center: HexId;
+};
 
-export const findHexForState = (id: HexId, board: BoardState) => {
+export const findHexForState = (id: HexId, board: HexState[]) => {
     return board.find((hex) => hex.id.x === id.x && hex.id.y === id.y);
 }
 
@@ -35,19 +39,23 @@ export function fromHex<T>(id: HexId, board: Hex<HexState>[], transform: (hex: H
 }
 
 // returns a deep cloned board state
-export function selectHexInBoard(id: HexId, board: BoardState): BoardState {
-    return board.map((hex) => {
-        return Object.assign({}, hex, {
-            isSelected: idCheck(hex.id, id)
-        });
+export function selectHexInBoard(id: HexId, state: BoardState): BoardState {
+    return Object.assign({}, state, {
+        board: state.board.map((hex) => {
+            return Object.assign({}, hex, {
+                isSelected: idCheck(hex.id, id)
+            });
+        })
     });
 }
 
-export function deselect(board: BoardState) {
-    return board.map((hex) => {
-        return Object.assign({}, hex, {
-            isSelected: false
-        });
+export function deselect(state: BoardState): BoardState {
+    return Object.assign({}, state, {
+        board: state.board.map((hex) => {
+            return Object.assign({}, hex, {
+                isSelected: false
+            });
+        })
     });
 }
 
@@ -56,7 +64,7 @@ export function idCheck(a: HexId, b: HexId) {
         a.y === b.y;
 }
 
-export function defaultHexState({x, y}: {x: number, y: number}): HexState {
+export function defaultHexState({ x, y }: { x: number, y: number }): HexState {
     return {
         id: {
             x,
@@ -66,3 +74,12 @@ export function defaultHexState({x, y}: {x: number, y: number}): HexState {
         isSelected: false,
     }
 }
+
+export const UNINITIALIZED_STATE: BoardState = {
+    board: [],
+    radius: -1,
+    center: {
+        x: -1,
+        y: -1
+    }
+};

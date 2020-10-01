@@ -3,14 +3,14 @@ import { Dispatch } from 'redux';
 import React from 'react';
 import SVG from 'svgjs';
 import { getSvgHexGridFactory } from '../svg/SvgGrid';
-import { BoardState, defaultHexState, HexState, idCheck } from './state/BoardState';
+import { BoardState, defaultHexState, HexState, idCheck, UNINITIALIZED_STATE } from './state/BoardState';
 import ClickHandler from '../handler/ClickHandler';
 import BoardAction from '../action/BoardAction';
 import './Board.css';
 import { Hex } from 'honeycomb-grid';
 
 export interface BoardProps {
-    board: BoardState;
+    state: BoardState;
     selectedHex?: any;
     selectHex: (hex: any) => void;
     initializeBoard: (board: BoardState) => void;
@@ -19,7 +19,7 @@ export interface BoardProps {
 class Board extends React.Component<BoardProps> {
 
     static defaultProps: Partial<BoardProps> = {
-        board: []
+        state: UNINITIALIZED_STATE
     };
 
     private svgRef?: SVG.Doc;
@@ -34,11 +34,17 @@ class Board extends React.Component<BoardProps> {
             radius: 5,
             center: [5, 5]
         });
-        this.props.initializeBoard(this.grid.map(defaultHexState));
+        this.props.initializeBoard({
+            board: this.grid.map(defaultHexState),
+            radius: 5,
+            center: {
+                x: 5,
+                y: 5
+            }
+        });
     }
 
     public componentDidUpdate() {
-        console.log('Board re-rendering');
         this.renderSvg();
     }
 
@@ -49,14 +55,12 @@ class Board extends React.Component<BoardProps> {
     private renderSvg() {
         this.svgRef!.clear();
         if (this.grid !== undefined) {
-            console.log(this.grid);
-            console.log(this.props.board);
             this.grid.forEach((hex: any) => hex.render(this.getStateForHex(hex)));
         }
     }
 
     private getStateForHex(drawnHex: Hex<{}>): HexState | undefined {
-        const maybeState = this.props.board.find((hex) => idCheck(hex.id, drawnHex));
+        const maybeState = this.props.state.board.find((hex) => idCheck(hex.id, drawnHex));
         // console.log(maybeState);
         return maybeState;
     }

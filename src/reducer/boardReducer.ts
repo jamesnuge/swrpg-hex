@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { selectHexInBoard, BoardState, deselect } from '../board/state/BoardState'
+import { selectHexInBoard, BoardState, deselect, UNINITIALIZED_STATE } from '../board/state/BoardState'
 
 
 export const HEX_SELECTED = 'HEX_SELECTED';
@@ -14,22 +14,22 @@ interface BoardAction extends Action<BoardActionType> {
 }
 
 interface BoardStoreState {
-    board: any[];
+    board: BoardState;
     selectedHex?: any;
 }
 
 const boardState = {
-    board: []
+    board: UNINITIALIZED_STATE
 }
 
 function boardReducer(state: BoardStoreState = boardState, {payload, type}: BoardAction): BoardStoreState {
-
     switch(type) {
         case HEX_SELECTED:
-            const previousHex = state.board.find((hex) => hex.isSelected);
+            const currentBoardState = state.board;
+            const previousHex = currentBoardState.board.find((hex) => hex.isSelected);
             let board: BoardState;
             if (previousHex) {
-                if (previousHex.x !== payload.x || previousHex.x !== payload.y) {
+                if (previousHex.id.x !== payload.x || previousHex.id.y !== payload.y) {
                     board = selectHexInBoard(payload, state.board)                    
                 } else {
                     board = deselect(state.board);
@@ -44,7 +44,9 @@ function boardReducer(state: BoardStoreState = boardState, {payload, type}: Boar
         case INITIALIZE_BOARD:
             return {
                 ...state,
-                board: payload
+                board: Object.assign({}, state.board, {
+                    board: payload
+                })
             };
         default:
             return {...state};
