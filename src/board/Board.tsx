@@ -75,7 +75,7 @@ class Board extends React.Component<BoardProps> {
         const that = this;
         return ({ offsetX, offsetY, target }: MouseEvent) => {
             // Find better way to suppress clicks outside of the svg/board component
-            if ((target as any).className === 'board') {
+            if ((target as any as {className: string}).className === 'board') {
                 console.info('Suppressing click outside of board');
             } else {
                 const hexCoordinates = that.gridFactory.Grid.pointToHex(offsetX, offsetY)

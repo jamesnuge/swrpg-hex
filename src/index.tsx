@@ -5,9 +5,11 @@ import * as serviceWorker from './serviceWorker';
 import Board from './board/Board';
 import { Provider } from 'react-redux';
 import configureStore from './store';
+// import App from './app/App';
 
 ReactDOM.render(
     <Provider store={configureStore()}>
+      {/* <App/> */}
         <Board/>
     </Provider>,
   document.getElementById('root')
