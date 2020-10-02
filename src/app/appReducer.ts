@@ -1,7 +1,9 @@
+import * as shortUuid from 'short-uuid';
 import { Action } from 'redux';
 
 interface AppState {
     isOpen: boolean;
+    sessionId?: string;
 }
 
 const appStore: AppState = {
@@ -19,6 +21,14 @@ const appReducer: (state: AppState, action: Action) => AppState = (state: AppSta
             return {
                 ...state,
                 isOpen: false
+            };
+        case 'START_SESSION':
+            const sessionId = shortUuid.generate();
+            localStorage.setItem('sessionId', sessionId);
+            return {
+                ...state,
+                isOpen: false,
+                sessionId
             };
         default:
             return {...state};

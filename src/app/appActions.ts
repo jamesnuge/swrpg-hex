@@ -6,6 +6,9 @@ const appActions = (dispatch: Dispatch) => ({
     },
     openModal: () => {
         dispatch({type: 'OPEN_MODAL'})
+    },
+    startSession: () => {
+        dispatch({type: 'START_SESSION'});
     }
 });
 
