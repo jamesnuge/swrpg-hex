@@ -23,6 +23,12 @@ class Board extends React.Component<BoardProps> {
     private gridFactory: any;
     private readonly BOARD_ID: string = 'board';
 
+    constructor(props: BoardProps) {
+        super(props);
+
+        this.clickHandler = this.clickHandler.bind(this);
+    }
+
     //@Override
     public componentDidMount() {
         this.gridFactory = getSvgHexGridFactory(this.svgRef!);
@@ -65,26 +71,23 @@ class Board extends React.Component<BoardProps> {
             <div className='board'>
                 The Board
                 <div id={this.BOARD_ID} ref={ref => this.initializeSvgRef(ref)}></div>
-                <ClickHandler handler={this.getClickHandler()}/>
+                <ClickHandler handler={this.clickHandler}/>
                 {/* <pre>{JSON.stringify(this.props, null, 2)}</pre> */}
             </div>
         );
     }
 
-    public getClickHandler() {
-        const that = this;
-        return ({ offsetX, offsetY, target }: MouseEvent) => {
+    public clickHandler({ offsetX, offsetY, target }: MouseEvent) {
             // Find better way to suppress clicks outside of the svg/board component
             if ((target as any as {className: string}).className === 'board') {
                 console.info('Suppressing click outside of board');
             } else {
-                const hexCoordinates = that.gridFactory.Grid.pointToHex(offsetX, offsetY)
-                const hex = that.grid.get(hexCoordinates);
+                const hexCoordinates = this.gridFactory.Grid.pointToHex(offsetX, offsetY)
+                const hex = this.grid.get(hexCoordinates);
                 if (hex) {
                     this.props.selectHex(hex);
                 }
             }
-        };
     }
 
 }
