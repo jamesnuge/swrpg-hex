@@ -9,14 +9,11 @@ import Board from '../board/Board';
 interface AppProps {
     sessionId?: string;
     isOpen: boolean;
+    sessionToJoin?: string;
     openModal: () => void;
     closeModal: () => void;
     startSession: () => void;
 };
-
-interface AppState {
-}
-
 
 class App extends React.Component<AppProps> {
     
@@ -33,6 +30,7 @@ class App extends React.Component<AppProps> {
             <ReactModal isOpen={this.props.isOpen}>
                 test modal
                 <button onClick={this.props.startSession}>Start Session</button>
+                Join 
                 <button onClick={this.props.closeModal}>Join Session</button>
             </ReactModal>
             <Board/>
