@@ -1,10 +1,11 @@
 import React from 'react';
-import ReactModal from 'react-modal';
+import Modal from 'react-modal';
 import appActions from './appActions';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { NOOP } from '../util/types';
 import Board from '../board/Board';
+import { Box, Button, Container } from '@material-ui/core';
 
 interface AppProps {
     sessionId?: string;
@@ -26,21 +27,30 @@ class App extends React.Component<AppProps> {
 
     render() {
         return (
-        <div>
-            <ReactModal isOpen={this.props.isOpen}>
-                test modal
-                <button onClick={this.props.startSession}>Start Session</button>
-                Join 
-                <button onClick={this.props.closeModal}>Join Session</button>
-            </ReactModal>
-            <Board/>
-        </div>
+        <>
+                <Modal isOpen={this.props.isOpen}>
+                    <Container maxWidth="sm">
+                        <Box my={4} justifyContent="center">
+                            Welcome to SWRPG Hex
+                        </Box>
+                        <Box my={4} justifyContent="center">
+                            <Button color="primary" variant="contained" onClick={this.props.startSession}>Start Session</Button>
+                            <Button onClick={this.props.closeModal}>Join Session</Button>
+                        </Box>
+                    </Container>
+                </Modal>
+                <Board />
+            </>
         );
     }
 
 }
 
-const mapStateToProps = ({appReducer}: any) => appReducer
+const mapStateToProps = ({ appReducer }: any) => ({
+    ...appReducer,
+    isOpen: appReducer.startingModalIsOpen
+});
+
 const mapDispatchToProps = (dispatch: Dispatch) => appActions(dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
