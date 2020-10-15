@@ -11,8 +11,6 @@ interface AppProps {
     sessionId?: string;
     isOpen: boolean;
     sessionToJoin?: string;
-    openModal: () => void;
-    closeModal: () => void;
     startSession: () => void;
 };
 
@@ -20,13 +18,10 @@ class App extends React.Component<AppProps> {
     
     static defaultProps = {
         isOpen: true,
-        openModal: NOOP,
-        closeModal: NOOP,
         startSession: NOOP,
     };
 
     render() {
-        console.log('app props', JSON.stringify(this.props, null, 2));
         return (
         <>
                 <Modal isOpen={this.props.isOpen} style={{
@@ -45,7 +40,7 @@ class App extends React.Component<AppProps> {
                         <Box my={4} display="flex" color="#E0E0E0" justifyContent="center">
                             <Button color="primary" variant="contained" onClick={this.props.startSession}>Start Session</Button>
                             <Divider orientation="vertical" flexItem/>
-                            <Button color="primary" variant="contained" onClick={this.props.closeModal}>Join Session</Button>
+                            <Button color="primary" variant="contained" onClick={this.props.startSession}>Join Session</Button>
                         </Box>
                     </Container>
                 </Modal>
@@ -56,14 +51,9 @@ class App extends React.Component<AppProps> {
 
 }
 
-const mapStateToProps = (state: any) => () => {
-    console.log('mapping state to props')
-    console.log(state);
-    return {
-        ...state.appReducer,
-        isOpen: state.appReducer.isOpen
-    };
-};
+const mapStateToProps = ({appReducer}: any) => ({
+        isOpen: !appReducer.session
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => appActions(dispatch);
 
