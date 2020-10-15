@@ -25,7 +25,8 @@
     "redux-thunk": "^2.3.0",
     "short-uuid": "^4.1.0",
     "svgjs": "^2.6.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "websocket": "^1.0.32"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@types/remote-redux-devtools": "^0.5.4",
+    "@types/websocket": "^1.0.1",
     "remote-redux-devtools": "^0.5.16"
   }
 }

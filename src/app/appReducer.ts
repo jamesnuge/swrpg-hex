@@ -1,35 +1,41 @@
 import * as shortUuid from 'short-uuid';
 import { Action } from 'redux';
+import { Session } from '../session/Session';
 
 interface AppState {
-    startingModalIsOpen: boolean;
-    sessionId?: string;
+    isOpen: boolean;
+    session?: Session;
 }
 
 const appStore: AppState = {
-    startingModalIsOpen: true
+    isOpen: true
 }
 
-const appReducer: (state: AppState, action: Action) => AppState = (state: AppState = appStore, {type}: Action): AppState => {
+
+const appReducer: (state: AppState, action: Action) => AppState = (state: AppState = appStore, action: Action): AppState => {
+    const {type} = action;
     switch(type) {
         case 'CLOSE_MODAL':
+            console.log('closing modal');
             return {
                 ...state,
-                startingModalIsOpen: false
+                isOpen: false
             };
         case 'OPEN_MODAL':
             return {
                 ...state,
-                startingModalIsOpen: false
+                isOpen: true
             };
         case 'START_SESSION':
             const sessionId = shortUuid.generate();
             localStorage.setItem('sessionId', sessionId);
-            return {
+            const derp = {
                 ...state,
-                startingModalIsOpen: false,
-                sessionId
+                isOpen: false
+                // session: (action as any).payload
             };
+            console.log(derp);
+            return derp;
         default:
             return {...state};
     }

@@ -1,4 +1,6 @@
+import shortUuid from 'short-uuid';
 import { Dispatch } from 'redux';
+import { Session } from '../session/Session';
 
 const appActions = (dispatch: Dispatch) => ({
     closeModal: () => {
@@ -7,8 +9,14 @@ const appActions = (dispatch: Dispatch) => ({
     openModal: () => {
         dispatch({type: 'OPEN_MODAL'})
     },
-    startSession: () => {
-        dispatch({type: 'START_SESSION'});
+    startSession: (session: Session) => {
+        console.log('starting session');
+        const sessionId = shortUuid.generate();
+        localStorage.setItem('sessionId', sessionId);
+        dispatch({
+            type: 'START_SESSION'
+            // payload: session
+        });
     }
 });
 
