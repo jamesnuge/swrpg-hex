@@ -2,7 +2,8 @@ import SVG from 'svgjs';
 import { extendHex } from 'honeycomb-grid';
 import { HexId, HexState } from '../board/state/BoardState';
 
-const yOffset = 5;
+const yOffset = 20;
+const xOffset = -210
 
 export const getSvgHex = (svg: SVG.Doc) => {
     return extendHex({
@@ -24,7 +25,7 @@ export const getSvgHex = (svg: SVG.Doc) => {
                     .stroke(
                         { width: 2, color: '#999' }
                     )
-                    .translate(position.x, position.y + 4)
+                    .translate(position.x + xOffset, position.y + yOffset)
 
                 const fontSize = 12
 
@@ -36,7 +37,7 @@ export const getSvgHex = (svg: SVG.Doc) => {
                         leading: 1.4,
                     })
                     .stroke(center && center.x === hexRef.x && center.y === hexRef.y ? 'green' : '#61dafb')
-                    .translate(centerPosition.x, centerPosition.y - fontSize + yOffset)
+                    .translate(centerPosition.x + xOffset, centerPosition.y - fontSize + yOffset)
             }
         }
     });
