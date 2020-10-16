@@ -16,9 +16,10 @@ const appReducer: (state: AppState, action: Action) => AppState = (state: AppSta
         case 'START_SESSION':
             const sessionId = shortUuid.generate();
             localStorage.setItem('sessionId', sessionId);
+            const session = createSession(sessionId);
             return {
                 ...state,
-                session: createSession(sessionId)
+                session
             };
         default:
             return {...state};

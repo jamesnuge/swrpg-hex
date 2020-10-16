@@ -3,17 +3,17 @@ import { RootStore } from '../reducer/RootReducer';
 import { Session } from '../session/Session';
 import { withDefined } from '../util/types';
 
-// export const socketMiddleware = (store: RootStore) => (next: (action: AnyAction) => RootStore) => (action: AnyAction) => {
-//     console.log(store);
-//     return next(action);
-// }
-
 export const socketMiddleware: Middleware = (api: MiddlewareAPI<Dispatch<AnyAction>, RootStore>) => (next: Dispatch<AnyAction>) => (action: AnyAction) => {
-    const {appReducer} = api.getState();
-    const session = appReducer.session
-    withDefined(appReducer.session, ({sessionId}: Session) => {
+    console.log('middleware', action);
+    const nextState = next(action);
+    const {appReducer, boardReducer} = api.getState();
+    withDefined(appReducer.session, ({sessionId, socket}: Session) => {
         console.log('sessionId', sessionId);
-        // socket.send(action);
+        
+        socket.send(JSON.stringify({
+            type: 'INIT',
+            state: boardReducer
+        }));
     });
-    return next(action);
+    return nextState;
 };

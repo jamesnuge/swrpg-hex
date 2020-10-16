@@ -11,17 +11,16 @@ export interface SessionDisplayProps {
     restoreSession: Runnable;
 }
 
-const SESSION_RESTORE = 'RESTORE',
-    SESSION_SHARE = 'SHARE';
+// const SESSION_RESTORE = 'RESTORE',
+//     SESSION_SHARE = 'SHARE';
 
-type SessionDisplayAction = typeof SESSION_RESTORE | typeof SESSION_SHARE;
-
-function isSessionDisplayAction(value: unknown):value is SessionDisplayAction {
-    return value === SESSION_RESTORE || value === SESSION_SHARE;
-}
+// type SessionDisplayAction = typeof SESSION_RESTORE | typeof SESSION_SHARE;
 
 const SessionDisplayComponent = ({sessionId, restoreSession}: SessionDisplayProps) => {
     const handleChange = (value: unknown) => {
+        console.log(value);
+        console.log(sessionId);
+        console.log(restoreSession);
     };
     return <BottomNavigation
         showLabels
