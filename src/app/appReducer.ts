@@ -2,7 +2,7 @@ import * as shortUuid from 'short-uuid';
 import { Action } from 'redux';
 import { createSession, Session } from '../session/Session';
 
-interface AppState {
+export interface AppState {
     session?: Session;
 }
 

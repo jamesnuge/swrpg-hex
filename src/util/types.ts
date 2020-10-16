@@ -1,4 +1,13 @@
 export const NOOP = () => {};
+export const withDefined = <T>(value: T | undefined, consumer: Consumer<T>) => {
+    if (!isUndefined(value)) {
+        consumer(value);
+    }
+}
+
+export function isUndefined<T>(value: T | undefined): value is undefined {
+    return value === undefined;
+}
 
 export type Runnable = () => void;
 export type Supplier<T> = () => T;

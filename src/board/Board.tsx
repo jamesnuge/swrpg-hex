@@ -8,6 +8,7 @@ import ClickHandler from '../handler/ClickHandler';
 import BoardAction from '../action/BoardAction';
 import './Board.css';
 import { Hex } from 'honeycomb-grid';
+import { xOffset, yOffset } from '../svg/SvgHex';
 
 export interface BoardProps extends BoardState {
     selectHex: (hex: any) => void;
@@ -81,10 +82,13 @@ class Board extends React.Component<BoardProps> {
             // Find better way to suppress clicks outside of the svg/board component
             const nodeName = (target as HTMLElement).nodeName;
             if (nodeName === 'tspan' || nodeName === 'polygon') {
-                const hexCoordinates = this.gridFactory.Grid.pointToHex(offsetX, offsetY)
+                // TODO: Make the xOffset and yOffset part of the state, or some configurable option
+                const hexCoordinates = this.gridFactory.Grid.pointToHex(offsetX - xOffset, offsetY - yOffset)
                 const hex = this.grid.get(hexCoordinates);
                 if (hex) {
                     this.props.selectHex(hex);
+                } else {
+                    console.info('Clicked svg outside of board');
                 }
             } else {
                 console.info('Suppressing click outside of board');
