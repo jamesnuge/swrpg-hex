@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { NOOP } from '../util/types';
 import Board from '../board/Board';
 import { Box, Button, Container, Divider } from '@material-ui/core';
+import SessionDisplayComponent from '../board/session/SessionDisplayComponent';
 
 interface AppProps {
     sessionId?: string;
@@ -45,6 +46,7 @@ class App extends React.Component<AppProps> {
                     </Container>
                 </Modal>
                 <Board />
+                <SessionDisplayComponent/>
             </>
         );
     }
