@@ -1,34 +1,62 @@
-import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
-import React from 'react';
+import { BottomNavigation, BottomNavigationAction, Snackbar } from '@material-ui/core';
+import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
 import { connect } from 'react-redux';
 import { RootStore } from '../../reducer/RootReducer';
 import { Restore, Share } from '@material-ui/icons';
-import { Runnable } from '../../util/types';
+import { isUndefined, Runnable } from '../../util/types';
 import { Dispatch } from 'redux';
+import { copyTextToClipboard } from '../../util/copy';
 
 export interface SessionDisplayProps {
     sessionId?: string;
     restoreSession: Runnable;
 }
 
-// const SESSION_RESTORE = 'RESTORE',
-//     SESSION_SHARE = 'SHARE';
+const SESSION_RESTORE = 'RESTORE',
+    SESSION_SHARE = 'SHARE';
 
 // type SessionDisplayAction = typeof SESSION_RESTORE | typeof SESSION_SHARE;
 
 const SessionDisplayComponent = ({sessionId, restoreSession}: SessionDisplayProps) => {
-    const handleChange = (value: unknown) => {
-        console.log(value);
-        console.log(sessionId);
-        console.log(restoreSession);
+    const [showNotification, setShowNotification] = useState(false);
+    const handleChange = (_event: ChangeEvent<{}>, value: string) => {
+        switch (value) {
+            case SESSION_SHARE:
+                if (!isUndefined(sessionId)) {
+                    copyTextToClipboard(`http://localhost:3000/${sessionId}`);
+                    setShowNotification(true);
+                }
+                break;
+            default:
+                break;
+        }
     };
-    return <BottomNavigation
-        showLabels
-        onChange={handleChange}
-    >
-        <BottomNavigationAction label="Restore" value={'RESTORE'} icon={<Restore/>} />
-        <BottomNavigationAction label="Share" value={'SHARE'} icon={<Share/>} />
-    </BottomNavigation>
+    const handleClose = (_event: SyntheticEvent, reason: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setShowNotification(false);
+    };
+
+    return <>
+        <BottomNavigation
+            showLabels
+            onChange={handleChange}>
+            <BottomNavigationAction label="Restore" value={SESSION_RESTORE} icon={<Restore />} />
+            <BottomNavigationAction label="Share" value={SESSION_SHARE} icon={<Share />} />
+        </BottomNavigation>
+
+        <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+            open={showNotification}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            message="Shareable link copied to clipboard"
+        />
+    </>
 }
 
 const mapStateToProps: (state: RootStore) => Partial<SessionDisplayProps> = ({ appReducer }) => {

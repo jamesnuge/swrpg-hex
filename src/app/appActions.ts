@@ -5,6 +5,12 @@ const appActions = (dispatch: Dispatch) => ({
         dispatch({
             type: 'START_SESSION'
         });
+    },
+    joinSession: (id: string) => {
+        dispatch({
+            type: 'JOIN_SESSION',
+            payload: id
+        })
     }
 });
 

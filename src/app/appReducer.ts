@@ -4,9 +4,12 @@ import { createSession, Session } from '../session/Session';
 
 export interface AppState {
     session?: Session;
+    isJoiningSession: boolean;
+    hostId?: string;
 }
 
 const appStore: AppState = {
+    isJoiningSession: false
 }
 
 
