@@ -3,7 +3,9 @@ import { Dispatch } from 'redux';
 const appActions = (dispatch: Dispatch) => ({
     startSession: () => {
         dispatch({
-            type: 'START_SESSION'
+            type: 'INITIALIZE_BOARD',
+            radius: 5
+            // type: 'START_SESSION'
         });
     },
     joinSession: (id: string) => {

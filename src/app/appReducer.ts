@@ -16,7 +16,7 @@ const appStore: AppState = {
 const appReducer: (state: AppState, action: Action) => AppState = (state: AppState = appStore, action: Action): AppState => {
     const {type} = action;
     switch(type) {
-        case 'START_SESSION':
+        case 'INITIALIZE_BOARD':
             const sessionId = shortUuid.generate();
             localStorage.setItem('sessionId', sessionId);
             const session = createSession(sessionId);

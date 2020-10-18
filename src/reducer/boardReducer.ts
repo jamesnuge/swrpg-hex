@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { selectHexInBoard, BoardState, deselect, UNINITIALIZED_STATE } from '../board/state/BoardState'
+import { selectHexInBoard, BoardState, deselect, UNINITIALIZED_STATE, generateBoard } from '../board/state/BoardState'
 
 
 export const HEX_SELECTED = 'HEX_SELECTED';
@@ -37,9 +37,8 @@ function boardReducer(state: BoardStoreState = boardState, {payload, type}: Boar
                 ...board
             };
         case INITIALIZE_BOARD:
-            return {
-                ...payload
-            };
+            const grid = generateBoard(5);
+            return grid;
         default:
             return {...state};
     }

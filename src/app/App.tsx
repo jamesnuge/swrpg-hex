@@ -64,7 +64,7 @@ const App = (props: AppProps) => {
                     }
                 </Container>
             </Modal>
-            <Board />
+            {/* <Board /> */}
             <FBoard />
             <SessionDisplayComponent />
         </>

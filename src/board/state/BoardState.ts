@@ -1,4 +1,5 @@
 import { Hex } from 'honeycomb-grid';
+import { generateBaseGrid } from '../../svg/SvgGrid';
 
 export interface HexId {
     x: number;
@@ -72,6 +73,18 @@ export function defaultHexState({ x, y }: { x: number, y: number }): HexState {
         },
         isHighlighted: false,
         isSelected: false,
+    }
+}
+
+export const generateBoard: (radius: number) => BoardState = (radius: number) => {
+    const baseGrid = generateBaseGrid(radius);
+    return {
+        board: baseGrid,
+        radius,
+        center: {
+            x: radius,
+            y: radius
+        }
     }
 }
 

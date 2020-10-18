@@ -23,7 +23,7 @@ const SessionDisplayComponent = ({sessionId, restoreSession}: SessionDisplayProp
         switch (value) {
             case SESSION_SHARE:
                 if (!isUndefined(sessionId)) {
-                    copyTextToClipboard(`http://localhost:3000/${sessionId}`);
+                    copyTextToClipboard(sessionId);
                     setShowNotification(true);
                 }
                 break;
