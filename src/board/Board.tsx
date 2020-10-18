@@ -42,14 +42,14 @@ class Board extends React.Component<BoardProps> {
                     radius: this.props.radius,
                     center: this.props.center
                 });
-                this.props.initializeBoard({
-                    board: this.grid.map(defaultHexState),
-                    radius: 5,
-                    center: {
-                        x: 5,
-                        y: 5
-                    }
-                });
+                // this.props.initializeBoard({
+                //     board: this.grid.map(defaultHexState),
+                //     radius: 5,
+                //     center: {
+                //         x: 5,
+                //         y: 5
+                //     }
+                // });
             }
             this.renderSvg();
         }

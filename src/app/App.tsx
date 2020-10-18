@@ -4,6 +4,7 @@ import appActions from './appActions';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import Board from '../board/Board';
+import FBoard from '../board/FunctionalBoard';
 import { Box, Button, Container, Divider, TextField } from '@material-ui/core';
 import SessionDisplayComponent from '../board/session/SessionDisplayComponent';
 import { RootStore } from '../reducer/RootReducer';
@@ -64,6 +65,7 @@ const App = (props: AppProps) => {
                 </Container>
             </Modal>
             <Board />
+            <FBoard />
             <SessionDisplayComponent />
         </>
     );
