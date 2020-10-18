@@ -9,15 +9,20 @@ import BoardAction from '../action/BoardAction';
 import './Board.css';
 import { Hex } from 'honeycomb-grid';
 import { xOffset, yOffset } from '../svg/SvgHex';
+import { Box, Container } from '@material-ui/core';
 
 export interface BoardProps extends BoardState {
+    displayBoard: boolean;
     selectHex: (hex: any) => void;
     initializeBoard: (board: BoardState) => void;
 }
 
 class Board extends React.Component<BoardProps> {
 
-    static defaultProps: Partial<BoardProps> = UNINITIALIZED_STATE;
+    static defaultProps: Partial<BoardProps> = {
+        ...UNINITIALIZED_STATE,
+        displayBoard: false
+    };
 
     private svgRef?: SVG.Doc;
     private grid: any = [];
@@ -26,29 +31,28 @@ class Board extends React.Component<BoardProps> {
 
     constructor(props: BoardProps) {
         super(props);
-
         this.getClickHandler = this.getClickHandler.bind(this);
     }
 
-    //@Override
-    public componentDidMount() {
-        this.gridFactory = getSvgHexGridFactory(this.svgRef!);
-        this.grid = this.gridFactory({
-            radius: 5,
-            center: [5, 5]
-        });
-        this.props.initializeBoard({
-            board: this.grid.map(defaultHexState),
-            radius: 5,
-            center: {
-                x: 5,
-                y: 5
-            }
-        });
-    }
-
     public componentDidUpdate() {
-        this.renderSvg();
+        if (this.props.displayBoard) {
+            if (!(this.props.board.length > 0)) {
+                this.gridFactory = getSvgHexGridFactory(this.svgRef!);
+                this.grid = this.gridFactory({
+                    radius: this.props.radius,
+                    center: this.props.center
+                });
+                this.props.initializeBoard({
+                    board: this.grid.map(defaultHexState),
+                    radius: 5,
+                    center: {
+                        x: 5,
+                        y: 5
+                    }
+                });
+            }
+            this.renderSvg();
+        }
     }
 
     private initializeSvgRef(ref: any) {
@@ -69,35 +73,44 @@ class Board extends React.Component<BoardProps> {
 
     public render() {
         return (
-            <div className='board'>
-                The Board
-                <div id={this.BOARD_ID} ref={ref => this.initializeSvgRef(ref)}></div>
-                <ClickHandler handler={this.getClickHandler}/>
+            <Container fixed style={{
+                height: '92vh'
+            }}>
+                {/* {this.props.displayBoard && */}
+                    <Box my={4} display="flex" color="#E0E0E0" justifyContent="center">
+                        <div id={this.BOARD_ID} ref={ref => this.initializeSvgRef(ref)}></div>
+                    </Box>
+                    {/* } */}
+                <ClickHandler handler={this.getClickHandler} />
                 {/* <pre>{JSON.stringify(this.props, null, 2)}</pre> */}
-            </div>
+            </Container>
         );
     }
 
     public getClickHandler({ offsetX, offsetY, target }: MouseEvent) {
-            // Find better way to suppress clicks outside of the svg/board component
-            const nodeName = (target as HTMLElement).nodeName;
-            if (nodeName === 'tspan' || nodeName === 'polygon') {
-                // TODO: Make the xOffset and yOffset part of the state, or some configurable option
-                const hexCoordinates = this.gridFactory.Grid.pointToHex(offsetX - xOffset, offsetY - yOffset)
-                const hex = this.grid.get(hexCoordinates);
-                if (hex) {
-                    this.props.selectHex(hex);
-                } else {
-                    console.info('Clicked svg outside of board');
-                }
+        // Find better way to suppress clicks outside of the svg/board component
+        const nodeName = (target as HTMLElement).nodeName;
+        if (nodeName === 'tspan' || nodeName === 'polygon') {
+            // TODO: Make the xOffset and yOffset part of the state, or some configurable option
+            const hexCoordinates = this.gridFactory.Grid.pointToHex(offsetX - xOffset, offsetY - yOffset)
+            const hex = this.grid.get(hexCoordinates);
+            if (hex) {
+                this.props.selectHex(hex);
             } else {
-                console.info('Suppressing click outside of board');
+                console.info('Clicked svg outside of board');
             }
+        } else {
+            console.info('Suppressing click outside of board');
+        }
     }
 
 }
 
-const mapStateToProps = ({boardReducer}: any) => boardReducer
+const mapStateToProps = ({ appReducer, boardReducer }: any) => ({
+    ...boardReducer,
+    displayBoard: !!appReducer.session,
+    boardInitialized: boardReducer.board.length > 0
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => BoardAction(dispatch);
 

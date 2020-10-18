@@ -6,15 +6,24 @@ import { Provider } from 'react-redux';
 import configureStore from './store';
 import App from './app/App';
 import Modal from 'react-modal';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
 Modal.setAppElement(
   '#root'
 );
 
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+  },
+});
+
 ReactDOM.render(
-    <Provider store={configureStore()}>
+  <Provider store={configureStore()}>
+    <MuiThemeProvider theme={theme}>
       <App />
-    </Provider>,
+    </MuiThemeProvider>
+  </Provider>,
   document.getElementById('root')
 );
 

@@ -63,7 +63,7 @@ const App = (props: AppProps) => {
                     }
                 </Container>
             </Modal>
-            {!props.isOpen && <Board />}
+            <Board />
             <SessionDisplayComponent />
         </>
     );

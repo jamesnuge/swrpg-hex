@@ -2,8 +2,8 @@ import SVG from 'svgjs';
 import { extendHex } from 'honeycomb-grid';
 import { HexId, HexState } from '../board/state/BoardState';
 
-export const yOffset = 20;
-export const xOffset = -210
+export const yOffset = 120;
+export const xOffset = -250
 
 export const getSvgHex = (svg: SVG.Doc) => {
     return extendHex({
