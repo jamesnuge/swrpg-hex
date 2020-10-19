@@ -81,7 +81,8 @@ class Board extends React.Component<BoardProps> {
                         <div id={this.BOARD_ID} ref={ref => this.initializeSvgRef(ref)}></div>
                     </Box>
                     {/* } */}
-                <ClickHandler handler={this.getClickHandler} />
+                {/* <ClickHandler handler={this.getClickHandler} /> */}
+
                 {/* <pre>{JSON.stringify(this.props, null, 2)}</pre> */}
             </Container>
         );
