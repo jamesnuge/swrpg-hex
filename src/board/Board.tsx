@@ -3,7 +3,7 @@ import SVG from 'svgjs';
 import { Box, Container } from '@material-ui/core';
 import ClickHandler from '../handler/ClickHandler';
 import { getSvgHexGridFactory, SvgHexFactory } from '../svg/SvgGrid';
-import { idCheck, UNINITIALIZED_STATE } from './state/BoardState';
+import { BoardState, idCheck, UNINITIALIZED_STATE } from './state/BoardState';
 import { Grid, Hex } from 'honeycomb-grid';
 import { Dispatch } from 'redux';
 import BoardAction from '../action/BoardAction';
@@ -14,7 +14,7 @@ import './Board.css';
 
 export interface BoardProps extends BoardState {
     displayBoard: boolean;
-    selectHex: (hex: any) => void;
+    selectHex: (hex: Hex<any>) => void;
 }
 
 const Board = (props: BoardProps) => {

@@ -6,7 +6,6 @@ export interface HandlerProps {
 
 export default (props: HandlerProps) => {
     React.useEffect(() => {
-        console.log('adding click handler');
         const handler = props.handler();
         window.addEventListener('click', handler)
         return () => window.removeEventListener('click', handler);
