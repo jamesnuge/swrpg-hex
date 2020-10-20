@@ -1,6 +1,6 @@
 import SVG from 'svgjs';
 import { getSvgHex } from './SvgHex';
-import { defineGrid, extendHex, HexCoordinates } from 'honeycomb-grid';
+import { defineGrid, extendHex, Grid, GridFactory, HexCoordinates, HexFactory } from 'honeycomb-grid';
 import { defaultHexState, HexState } from '../board/state/BoardState';
 
 export interface SvgHexGridOptions<T = {}> {
@@ -8,9 +8,14 @@ export interface SvgHexGridOptions<T = {}> {
     center?: HexCoordinates;
 }
 
-export const getSvgHexGridFactory = (svg: SVG.Doc) => {
+export interface SvgHexFactory {
+    (svg: SvgHexGridOptions): Grid<any>;
+    Grid: GridFactory<any>;
+}
+
+export const getSvgHexGridFactory: (svg: SVG.Doc) => SvgHexFactory = (svg: SVG.Doc) => {
     const hex = getSvgHex(svg);
-    const gridProducer = defineGrid(hex);
+    const gridProducer = defineGrid<HexFactory<unknown>>(hex);
     const factory = (hexOptions: SvgHexGridOptions) => gridProducer.hexagon({
         ...hexOptions
     });

@@ -1,11 +1,11 @@
 import SVG from 'svgjs';
-import { extendHex } from 'honeycomb-grid';
+import { extendHex, HexFactory } from 'honeycomb-grid';
 import { HexId, HexState } from '../board/state/BoardState';
 
 export const yOffset = 120;
 export const xOffset = -250
 
-export const getSvgHex = (svg: SVG.Doc) => {
+export const getSvgHex: (svg: SVG.Doc) => HexFactory<any> = (svg: SVG.Doc) => {
     return extendHex({
         textColor: '#69c',
         isSelected: false,
@@ -17,6 +17,9 @@ export const getSvgHex = (svg: SVG.Doc) => {
                 const hexRef: any = this as any;
                 const position = hexRef.toPoint()
                 const centerPosition = hexRef.center().add(position)
+                if (state.id.x === 5 && state.id.y === 5) {
+                    console.log('drawing center hex', centerPosition);
+                }
                 svg.polygon(hexRef.corners().map((ref: { x: number, y: number }) => `${ref.x},${ref.y}`))
                     .fill({
                         color: state.isSelected ? 'red' : '#1d2025',
