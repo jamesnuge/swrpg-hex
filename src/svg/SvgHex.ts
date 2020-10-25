@@ -23,6 +23,7 @@ export const getSvgHex: (svg: SVG.Doc) => HexFactory<any> = (svg: SVG.Doc) => {
         isSame({isSelected, isHighlighted}: HexData) {
             return this.isSelected === isSelected && this.isHighlighted === isHighlighted;
         },
+        // TODO: Rename to update. It better reflects what you're doing
         render(state?: HexState, center?: HexId) {
             if (state) {
                 const hexRef: Hex<HexData> = this as Hex<HexData>; 
