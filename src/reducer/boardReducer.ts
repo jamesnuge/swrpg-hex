@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+import { RESET_SESSION } from '../app/appActions';
 import { selectHexInBoard, BoardState, deselect, UNINITIALIZED_STATE, generateBoard } from '../board/state/BoardState'
 
 
@@ -7,7 +8,8 @@ export const INITIALIZE_BOARD = 'INITIALIZE_BOARD';
 
 type BoardActionType =
     typeof HEX_SELECTED |
-    typeof INITIALIZE_BOARD;
+    typeof INITIALIZE_BOARD |
+    typeof RESET_SESSION;
 
 interface BoardAction extends Action<BoardActionType> {
     payload: any;
@@ -37,6 +39,7 @@ function boardReducer(state: BoardStoreState = boardState, {payload, type}: Boar
                 ...board
             };
         case INITIALIZE_BOARD:
+        case RESET_SESSION:
             const grid = generateBoard(5);
             return grid;
         default:

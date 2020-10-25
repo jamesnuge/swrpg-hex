@@ -12,7 +12,6 @@ const appStore: AppState = {
     isJoiningSession: false
 }
 
-
 const appReducer: (state: AppState, action: Action) => AppState = (state: AppState = appStore, action: Action): AppState => {
     const {type} = action;
     switch(type) {

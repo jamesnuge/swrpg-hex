@@ -6,26 +6,30 @@ import { Restore, Share } from '@material-ui/icons';
 import { isUndefined, Runnable } from '../../util/types';
 import { Dispatch } from 'redux';
 import { copyTextToClipboard } from '../../util/copy';
+import appActions from '../../app/appActions';
 
 export interface SessionDisplayProps {
     sessionId?: string;
-    restoreSession: Runnable;
+    resetSession: Runnable;
 }
 
-const SESSION_RESTORE = 'RESTORE',
+const SESSION_RESET = 'RESET',
     SESSION_SHARE = 'SHARE';
 
-// type SessionDisplayAction = typeof SESSION_RESTORE | typeof SESSION_SHARE;
+type SessionDisplayAction = typeof SESSION_RESET | typeof SESSION_SHARE;
 
-const SessionDisplayComponent = ({sessionId, restoreSession}: SessionDisplayProps) => {
+const SessionDisplayComponent = ({sessionId, resetSession}: SessionDisplayProps) => {
     const [showNotification, setShowNotification] = useState(false);
-    const handleChange = (_event: ChangeEvent<{}>, value: string) => {
+    const handleChange = (_event: ChangeEvent<{}>, value: SessionDisplayAction) => {
         switch (value) {
             case SESSION_SHARE:
                 if (!isUndefined(sessionId)) {
                     copyTextToClipboard(sessionId);
                     setShowNotification(true);
                 }
+                break;
+            case SESSION_RESET:
+                resetSession();
                 break;
             default:
                 break;
@@ -42,7 +46,7 @@ const SessionDisplayComponent = ({sessionId, restoreSession}: SessionDisplayProp
         <BottomNavigation
             showLabels
             onChange={handleChange}>
-            <BottomNavigationAction label="Restore" value={SESSION_RESTORE} icon={<Restore />} />
+            <BottomNavigationAction label="Reset" value={SESSION_RESET} icon={<Restore />} />
             <BottomNavigationAction label="Share" value={SESSION_SHARE} icon={<Share />} />
         </BottomNavigation>
 
@@ -66,10 +70,6 @@ const mapStateToProps: (state: RootStore) => Partial<SessionDisplayProps> = ({ a
     };
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-        restoreSession: () => console.log('RESTORING THE SESSION')
-    };
-}
+const mapDispatchToProps = appActions
 
 export default connect(mapStateToProps, mapDispatchToProps)(SessionDisplayComponent);

@@ -1,5 +1,7 @@
 import { Dispatch } from 'redux';
 
+export const RESET_SESSION = 'RESET_SESSION';
+
 const appActions = (dispatch: Dispatch) => ({
     startSession: () => {
         dispatch({
@@ -12,6 +14,11 @@ const appActions = (dispatch: Dispatch) => ({
         dispatch({
             type: 'JOIN_SESSION',
             payload: id
+        })
+    },
+    resetSession: () => {
+        dispatch({
+            type: RESET_SESSION
         })
     }
 });
