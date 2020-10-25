@@ -17,9 +17,6 @@ export const getSvgHex: (svg: SVG.Doc) => HexFactory<any> = (svg: SVG.Doc) => {
                 const hexRef: any = this as any;
                 const position = hexRef.toPoint()
                 const centerPosition = hexRef.center().add(position)
-                if (state.id.x === 5 && state.id.y === 5) {
-                    console.log('drawing center hex', centerPosition);
-                }
                 svg.polygon(hexRef.corners().map((ref: { x: number, y: number }) => `${ref.x},${ref.y}`))
                     .fill({
                         color: state.isSelected ? 'red' : '#1d2025',

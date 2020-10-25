@@ -4,11 +4,13 @@ export interface HandlerProps {
     handler: () => (this: Window, ev: MouseEvent) => void
 };
 
-export default (props: HandlerProps) => {
+const CLICK = 'click';
+
+export default ({handler}: HandlerProps) => {
     React.useEffect(() => {
-        const handler = props.handler();
-        window.addEventListener('click', handler)
-        return () => window.removeEventListener('click', handler);
+        const handlerRef = handler();
+        window.addEventListener(CLICK, handlerRef)
+        return () => window.removeEventListener(CLICK, handlerRef);
     });
     return (<div className="click-handler"/>)
 }
