@@ -28,17 +28,24 @@ const Board = (props: BoardProps) => {
 
     useEffect(() => {
         if (props.displayBoard) {
-            if (svgElement.current) {
-                svgElement.current.clear();
-            } else {
+            if (!svgElement.current) {
                 svgElement.current = SVG(svgRef);
+                gridFactory.current = getSvgHexGridFactory(svgElement.current);
+                grid.current = gridFactory.current({
+                    radius: props.radius,
+                    center: props.center
+                });
+                grid.current.forEach((hex: any) => {
+                    hex.render(getStateForHex(hex), props.center)
+                });
+            } else {
+                grid.current!.forEach((hex: any) => {
+                    const newHex = getStateForHex(hex);
+                    if (!hex.isSame(newHex)) {
+                        hex.render(getStateForHex(hex), props.center)
+                    }
+                });
             }
-            gridFactory.current = gridFactory.current || getSvgHexGridFactory(svgElement.current);
-            grid.current = gridFactory.current({
-                radius: props.radius,
-                center: props.center
-            });
-            grid.current.forEach((hex: any) => hex.render(getStateForHex(hex), props.center));
         }
     });
 
