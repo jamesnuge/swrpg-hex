@@ -14,6 +14,7 @@ import './Board.css';
 
 export interface BoardProps extends BoardState {
     displayBoard: boolean;
+    boardInitialized: boolean;
     selectHex: (hex: Hex<any>) => void;
 }
 
@@ -80,8 +81,7 @@ const clickHandlerFactory = (
     }
 }
 
-const mapStateToProps = ({ appReducer, boardReducer }: any) => ({
-    ...boardReducer,
+const mapStateToProps = ({ appReducer, boardReducer }: any) => Object.assign({}, boardReducer, {
     displayBoard: !!appReducer.session,
     boardInitialized: boardReducer.board.length > 0
 });
@@ -90,7 +90,8 @@ Board.defaultProps = {
     ...UNINITIALIZED_STATE,
     selectHex: NOOP as any,
     initializeBoard: NOOP as any,
-    displayBoard: false
+    displayBoard: false,
+    boardInitialized: false
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => BoardAction(dispatch);

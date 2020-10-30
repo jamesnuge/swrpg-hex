@@ -5,6 +5,7 @@ import { selectHexInBoard, BoardState, deselect, UNINITIALIZED_STATE, generateBo
 
 export const HEX_SELECTED = 'HEX_SELECTED';
 export const INITIALIZE_BOARD = 'INITIALIZE_BOARD';
+export const UPDATE_SESSION_BOARD = 'UPDATE_SESSION_BOARD';
 
 type BoardActionType =
     typeof HEX_SELECTED |

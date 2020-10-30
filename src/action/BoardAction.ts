@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux';
 import { HEX_SELECTED, INITIALIZE_BOARD } from '../reducer/boardReducer';
-import { BoardState } from '../board/state/BoardState';
 
 export default (dispatch: Dispatch) => ({
     selectHex: (hex: any) => {
@@ -9,10 +8,12 @@ export default (dispatch: Dispatch) => ({
             payload: hex
         });
     },
-    initializeBoard: (board: BoardState) => {
+    initializeBoard: (radius: number) => {
         dispatch({
             type: INITIALIZE_BOARD,
-            payload: board
+            payload: {
+                radius
+            }
         })
     }
 })

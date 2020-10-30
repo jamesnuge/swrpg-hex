@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { RootStore } from '../../reducer/RootReducer';
 import { Restore, Share } from '@material-ui/icons';
 import { isUndefined, Runnable } from '../../util/types';
-import { Dispatch } from 'redux';
 import { copyTextToClipboard } from '../../util/copy';
 import appActions from '../../app/appActions';
 

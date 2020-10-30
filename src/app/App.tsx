@@ -56,14 +56,14 @@ const App = (props: AppProps) => {
                                 <TextField label='Session Id' onChange={(event: any) => setSessionId(event)}/>
                             </form>
                             <Divider orientation="vertical" flexItem />
-                            <Button color="primary" variant="contained" onClick={() => console.log(sessionId)}>
+                            <Button color="primary" variant="contained" onClick={() => props.joinSession(sessionId!)}>
                                 Connect
                             </Button>
                         </Box>
                     }
                 </Container>
             </Modal>
-            <Board />
+            {!props.isOpen && <Board />}
             <SessionDisplayComponent />
         </>
     );

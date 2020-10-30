@@ -5,9 +5,13 @@ export const RESET_SESSION = 'RESET_SESSION';
 const appActions = (dispatch: Dispatch) => ({
     startSession: () => {
         dispatch({
+            type: 'INITIALIZE_SESSION',
+        });
+        dispatch({
             type: 'INITIALIZE_BOARD',
-            radius: 5
-            // type: 'START_SESSION'
+            payload: {
+                radius: 5
+            }
         });
     },
     joinSession: (id: string) => {
