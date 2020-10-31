@@ -19,6 +19,7 @@ export interface BoardProps extends BoardState {
 }
 
 const Board = (props: BoardProps) => {
+    console.log('rendering board:', props);
     let svgRef: HTMLDivElement;
     let svgElement: Ref<SVG.Doc | undefined> = useRef<SVG.Doc>();
     let gridFactory: Ref<SvgHexFactory | undefined> = useRef();
@@ -28,6 +29,7 @@ const Board = (props: BoardProps) => {
     const clickHandler = clickHandlerFactory(gridFactory, grid, props.selectHex);
 
     useEffect(() => {
+        console.log('calling board effect', props);
         if (props.displayBoard) {
             if (!svgElement.current) {
                 svgElement.current = SVG(svgRef);

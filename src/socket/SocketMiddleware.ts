@@ -89,3 +89,7 @@ const createServerConnectionFromDispatch = (dispatch: Dispatch<AnyAction>) => {
         }
     }
 }
+
+const isFluxServerMessage = (message: any) => {
+    return message.origin!!;
+} 
