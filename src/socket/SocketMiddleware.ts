@@ -57,7 +57,7 @@ const createServerConnectionFromDispatch = (dispatch: Dispatch<AnyAction>) => {
     const serverAddress = process.env.REACT_APP_SERVER_ADDRESS;
     const serverPort = process.env.REACT_APP_SERVER_PORT;
     if (serverAddress && serverPort) {
-        const socket = new w3cwebsocket(`ws://${serverAddress}:${serverPort}`, 'echo-protocol');
+        const socket = new w3cwebsocket(`wss://${serverAddress}:${serverPort}`, 'echo-protocol');
         let isOpen = false;
         socket.onopen = () => {
             isOpen = true;
