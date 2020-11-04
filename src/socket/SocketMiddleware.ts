@@ -53,40 +53,47 @@ const getUser = ({ session, userId }: AppState) => {
 }
 
 const createServerConnectionFromDispatch = (dispatch: Dispatch<AnyAction>) => {
-    console.log('++CONNECTING TO WEBSOCKET++')
-    const socket = new w3cwebsocket('ws://localhost:3001', 'echo-protocol');
-    let isOpen = false;
-    socket.onopen = () => {
-        isOpen = true;
-    };
-    socket.onclose = () => {
-        isOpen = false;
-    };
-    socket.onerror = (error: unknown) => {
-        isOpen = false;
-        console.error(error);
-    };
-    socket.onmessage = ({ data }: IMessageEvent) => {
-        console.log('++ Received Message from Flux Server ++');
-        console.log(data);
-        if (typeof data === 'string') {
-            try {
-                dispatch(JSON.parse(data));
-            } catch (e) {
-                console.warn('Unable to parse flux server message');
+    console.log(process.env);
+    const serverAddress = process.env.REACT_APP_SERVER_ADDRESS;
+    const serverPort = process.env.REACT_APP_SERVER_PORT;
+    if (serverAddress && serverPort) {
+        const socket = new w3cwebsocket('ws://localhost:3001', 'echo-protocol');
+        let isOpen = false;
+        socket.onopen = () => {
+            isOpen = true;
+        };
+        socket.onclose = () => {
+            isOpen = false;
+        };
+        socket.onerror = (error: unknown) => {
+            isOpen = false;
+            console.error(error);
+        };
+        socket.onmessage = ({ data }: IMessageEvent) => {
+            console.log('++ Received Message from Flux Server ++');
+            console.log(data);
+            if (typeof data === 'string') {
+                try {
+                    dispatch(JSON.parse(data));
+                } catch (e) {
+                    console.warn('Unable to parse flux server message');
+                }
+            } else if (typeof data === 'object') {
+                dispatch(data as any);
             }
-        } else if (typeof data === 'object') {
-            dispatch(data as any);
-        }
-    };
-    return {
-        send: <T>(message: SocketPayload<T>) => {
-            if (isOpen) {
-                socket.send(JSON.stringify(message));
-            } else {
-                console.log('Unable to send event, socket is closed')
+        };
+        return {
+            send: <T>(message: SocketPayload<T>) => {
+                if (isOpen) {
+                    socket.send(JSON.stringify(message));
+                } else {
+                    console.log('Unable to send event, socket is closed')
+                }
             }
         }
+
+    } else {
+        throw new Error(`Misconfiguration. Both SERVER_ADDRESS and SERVER_PORT must be defined`);
     }
 }
 
