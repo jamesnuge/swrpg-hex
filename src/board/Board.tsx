@@ -29,8 +29,7 @@ const Board = (props: BoardProps) => {
     const clickHandler = clickHandlerFactory(gridFactory, grid, props.selectHex);
 
     useEffect(() => {
-        console.log('calling board effect', props);
-        if (props.displayBoard) {
+        if (props.displayBoard && props.boardInitialized) {
             if (!svgElement.current) {
                 svgElement.current = SVG(svgRef);
                 gridFactory.current = getSvgHexGridFactory(svgElement.current);

@@ -10,35 +10,35 @@ export const socketMiddleware: Middleware = (api: MiddlewareAPI<Dispatch<AnyActi
     return (next: Dispatch<AnyAction>) => {
         return (action: AnyAction) => {
             const nextState = next(action);
-            const { appReducer } = api.getState()
-            console.log(nextState);
-            switch (action.type) {
-                case HEX_SELECTED:
-                    const { x, y } = action.payload;
-                    serverConnection.send({
-                        type: HEX_SELECTED,
-                        payload: { x, y },
-                        user: getUser(appReducer)
-                    });
-                    break;
-                case INITIALIZE_BOARD:
-                    console.log('Middleware: Initializing the board');
-                    if (isHost(appReducer)) {
+            if (!isFluxServerMessage(action)) {
+                const { appReducer } = api.getState()
+                switch (action.type) {
+                    case HEX_SELECTED:
+                        const { x, y } = action.payload;
                         serverConnection.send({
-                            type: INITIALIZE_BOARD,
-                            payload: action.payload,
+                            type: HEX_SELECTED,
+                            payload: { x, y },
                             user: getUser(appReducer)
                         });
-                    }
-                    break;
-                case 'JOIN_SESSION':
-                    serverConnection.send({
-                        ...action,
-                        user: getUser(appReducer)
-                    });
-                    break;
-                default:
-                    console.log(`Not sending unconfigured action type: ${action.type}`);
+                        break;
+                    case INITIALIZE_BOARD:
+                        if (isHost(appReducer)) {
+                            serverConnection.send({
+                                type: INITIALIZE_BOARD,
+                                payload: action.payload,
+                                user: getUser(appReducer)
+                            });
+                        }
+                        break;
+                    case 'JOIN_SESSION':
+                        serverConnection.send({
+                            ...action,
+                            user: getUser(appReducer)
+                        });
+                        break;
+                    default:
+                        console.info(`Not sending unconfigured action type: ${action.type}`);
+                }
             }
             return nextState;
         };
